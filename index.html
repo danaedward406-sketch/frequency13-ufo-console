@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FREQUENCY 13 · UFO CONSOLE</title>
+<meta name="description" content="FREQUENCY 13 UFO Mixing Console — 13 Galactic Tones with glowing sigils, delay, LFO, reverb, and deep channeling transmissions. Click any symbol.">
+<!-- Open Graph / Social Preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="FREQUENCY 13 · UFO CONSOLE">
+<meta property="og:description" content="13 Galactic Tones. Glowing sigil grid. Live oscillators, effects, and deep transmissions. Click any symbol.">
+<meta property="og:image" content="original-frequency13-grid.jpg">
+<meta property="og:image:width" content="1170">
+<meta property="og:image:height" content="2532">
+<meta property="og:image:alt" content="FREQUENCY 13 original glowing golden sigil grid">
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FREQUENCY 13 · UFO CONSOLE">
+<meta name="twitter:description" content="13 Galactic Tones with the original glowing grid, effects, and deep meaning transmissions.">
+<meta name="twitter:image" content="original-frequency13-grid.jpg">
+<link href="https://fonts.cdnfonts.com/css/inked-skin-personal-use" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #d4af37;
+  --gold-bright: #ffe066;
+  --bg: #050505;
+  --text: #d4af37;
+  --panel: #0c0c0c;
+  --glow: 0 0 12px var(--gold);
+  --led: #00ff99;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: radial-gradient(ellipse at 50% 0%, #1a1106 0%, var(--bg) 70%);
+  color: var(--text);
+  font-family: 'Inked Skin Personal Use', 'Dancing Script', cursive;
+  min-height: 100vh;
+}
+.console { max-width: 1600px; margin: 0 auto; padding: 16px; }
+.grid-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(212,175,55,0.3);
+  padding: 12px;
+  background: rgba(0,0,0,0.5);
+}
+.channel {
+  background: linear-gradient(180deg, #141414 0%, #0a0a0a 100%);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: inset 0 0 15px rgba(212,175,55,0.08);
+}
+.symbol-box {
+  width: 72px; height: 72px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle, #1a1a1a 0%, #000 80%);
+  margin-bottom: 8px;
+  box-shadow: 0 0 16px rgba(212,175,55,0.6);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.symbol-box:hover { transform: scale(1.08); }
+.symbol-box svg { width: 56px; height: 56px; filter: drop-shadow(0 0 6px var(--gold-bright)); }
+.ch-name { font-size: 1.1em; font-weight: bold; text-align: center; }
+.ch-meaning { font-size: 0.85em; text-align: center; opacity: 0.75; min-height: 32px; margin: 3px 0 5px; }
+.freq { font-size: 1.1em; color: var(--gold-bright); font-weight: bold; margin: 3px 0; }
+.fader-container { height: 120px; display: flex; align-items: center; justify-content: center; margin: 6px 0; }
+input[type="range"].fader {
+  writing-mode: bt-lr;
+  -webkit-appearance: slider-vertical;
+  width: 12px; height: 110px;
+  accent-color: var(--gold);
+}
+.knob-row { width: 100%; display: flex; flex-direction: column; align-items: center; margin: 3px 0; }
+.knob-row label { font-size: 0.75em; opacity: 0.8; }
+input[type="range"]:not(.fader) { width: 88%; accent-color: var(--gold); height: 5px; }
+.meter { width: 7px; height: 55px; background: #1a1a1a; border: 1px solid var(--gold); position: relative; margin: 5px 0; }
+.meter-fill { position: absolute; bottom: 0; width: 100%; background: linear-gradient(to top, var(--led), var(--gold)); height: 0%; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; width: 100%; margin-top: 6px; }
+button {
+  background: #1a1a1a; color: var(--text); border: 1px solid var(--gold);
+  padding: 4px 7px; border-radius: 2px; font-size: 0.9em; cursor: pointer; font-family: inherit;
+}
+button:hover { background: var(--gold); color: #000; }
+.master-section {
+  background: linear-gradient(180deg, #111 0%, #000 100%);
+  border: 2px solid var(--gold);
+  padding: 14px; border-radius: 6px; box-shadow: var(--glow);
+  display: flex; flex-wrap: wrap; gap: 18px; justify-content: space-around; align-items: center;
+}
+.color-controls { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+.color-controls label { font-size: 0.9em; }
+.modal {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center;
+}
+.modal-content {
+  background: #111; border: 2px solid var(--gold); padding: 25px; max-width: 700px; max-height: 80vh;
+  overflow-y: auto; border-radius: 8px; box-shadow: var(--glow);
+}
+.modal h2 { font-size: 1.8em; margin-bottom: 10px; text-align: center; }
+.modal p { font-size: 1.05em; line-height: 1.5; margin: 10px 0; }
+.close { float: right; cursor: pointer; font-size: 1.5em; }
+.ufo-ring {
+  position: fixed; top: 50%; left: 50%; width: 800px; height: 800px;
+  border: 1px solid rgba(212,175,55,0.1); border-radius: 50%;
+  transform: translate(-50%, -50%); pointer-events: none; z-index: -1;
+  animation: spin 200s linear infinite;
+}
+@keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="ufo-ring"></div>
+<div class="console">
+  <div class="grid-board" id="channels"></div>
+  <div class="master-section">
+    <div>
+      <button id="playAll">Engage All</button>
+      <button id="stopAll">Silence</button>
+    </div>
+    <div>
+      <label>Master Gain</label><br>
+      <input type="range" id="masterGain" min="0" max="1" step="0.01" value="0.65" style="width:150px">
+    </div>
+    <div class="color-controls">
+      <div><label>Background</label><br><input type="color" id="bgColor" value="#050505"></div>
+      <div><label>Lettering</label><br><input type="color" id="textColor" value="#d4af37"></div>
+    </div>
+    <div class="status" id="status" style="font-size:0.95em; opacity:0.85;">Standby. Click any symbol for deep transmission.</div>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="modalTitle"></h2>
+    <div id="modalBody"></div>
+    <div style="margin-top: 20px; text-align: center; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <button id="readAloud" onclick="readAloud()">Read Aloud</button>
+      <button id="shareBtn" onclick="shareContent()">Share</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const deep = [
+  { name: "Magnetic", meaning: "Purpose · Attraction · Unify", base: 110, path: "M50 12 Q65 28 50 42 Q35 56 50 70 Q65 84 50 98",
+    deep: `<p><strong>Core Transmission:</strong> The initiating pulse. In José Argüelles’ Dreamspell and the Law of Time, Magnetic is the first tone of the wavespell — pure intention before form. It unifies and attracts resources around a clear purpose.</p>
+    <p><strong>Astrology & Cycles:</strong> Corresponds to the new moon phase and the first house impulse — the seed of identity. In lunar calendars and the 13-moon system it marks the start of a natural cycle rather than the artificial 12-month grid.</p>
+    <p><strong>Psychology:</strong> The moment of goal-setting and intrinsic motivation. Jungian individuation begins here: the Self magnetizes the necessary contents. In process psychology it is the “what do I truly want?” stage before resistance appears.</p>
+    <p><strong>Channeling this frequency:</strong> Expect heightened clarity of intention, sudden alignments, and the sensation of being drawn toward (or drawing toward you) the exact people, ideas, or conditions needed. Body may feel a subtle pull in the solar plexus or crown. Old scattered desires drop away as one central purpose locks in.</p>` },
+  { name: "Lunar", meaning: "Polarity · Challenge · Stabilize", base: 123, path: "M28 32 C48 8 72 8 82 38 C92 68 58 92 38 72 C18 52 28 32 28 32",
+    deep: `<p><strong>Core Transmission:</strong> The necessary opposition. Lunar polarizes so that the Magnetic intention can be tested and stabilized. Argüelles describes it as identifying the challenge that gives the purpose its strength.</p>
+    <p><strong>Astrology & Cycles:</strong> Crescent moon, second house tensions. Classic lunar polarity (moon reflecting sun, yin/yang). In the 13-tone arc it is the first friction that proves the seed is viable.</p>
+    <p><strong>Psychology:</strong> Shadow work and constructive opposition. Gestalt figure/ground, Freudian resistance, or the “devil’s advocate” stage in creative process. Stabilization comes from owning the polarity rather than collapsing it.</p>
+    <p><strong>Channeling this frequency:</strong> Challenges surface quickly — inner doubts, external obstacles, or relational mirrors. The body may feel a left/right or up/down tension. Successful channeling brings calm stability inside the contrast rather than forced resolution.</p>` },
+  { name: "Electric", meaning: "Activation · Bond · Service", base: 136, path: "M22 82 L42 22 L52 58 L68 12 L82 78",
+    deep: `<p><strong>Core Transmission:</strong> The spark that moves the polarized field into action. Electric bonds disparate elements and activates service as natural expression rather than duty.</p>
+    <p><strong>Astrology & Cycles:</strong> First quarter moon energy, third house communication and short-term action. Triadic patterns (body-mind-spirit, past-present-future) light up.</p>
+    <p><strong>Psychology:</strong> Behavioral activation, the shift from intention to first concrete steps. In flow theory it is the entry into engaged action; in Adlerian psychology the move toward social interest/service.</p>
+    <p><strong>Channeling this frequency:</strong> Sudden impulses to connect, message, or act. Tingling in hands or heart, mental quickening. Relationships or projects “click” into motion. Service feels effortless rather than obligatory.</p>` },
+  { name: "Self-Existing", meaning: "Form · Measure · Define", base: 149, path: "M22 22 L78 22 L78 78 L22 78 Z M38 38 L62 38 L62 62 L38 62 Z",
+    deep: `<p><strong>Core Transmission:</strong> Giving the activated energy measurable form. Self-Existing defines boundaries, measures what is needed, and anchors the wave in structure.</p>
+    <p><strong>Astrology & Cycles:</strong> Gibbous phase, fourth house foundations. Earth signs and the square aspect energy — solidifying. In the 13-moon calendar it corresponds to establishing the container for the cycle.</p>
+    <p><strong>Psychology:</strong> Boundary setting and operationalization. Cognitive behavioral “define the problem,” or the architectural stage of creative process. Jung’s “making the unconscious conscious” through form.</p>
+    <p><strong>Channeling this frequency:</strong> Urge to write plans, draw diagrams, set clear edges. Grounded, solid body sensation. Clarity about what belongs and what does not. Structures that felt abstract become practical.</p>` },
+  { name: "Overtone", meaning: "Empower · Radiate · Command", base: 162, path: "M50 8 L64 34 L88 34 L70 50 L78 82 L50 64 L22 82 L30 50 L12 34 L36 34 Z",
+    deep: `<p><strong>Core Transmission:</strong> The gathered power radiates outward. Overtone commands the field — the strongest external expression of the wavespell so far.</p>
+    <p><strong>Astrology & Cycles:</strong> Full moon illumination, fifth house creative radiance. The point where the cycle’s light is most visible.</p>
+    <p><strong>Psychology:</strong> Peak confidence and leadership expression. Self-efficacy (Bandura) at its height; the moment the inner work becomes visible authority. Radiance without forced performance.</p>
+    <p><strong>Channeling this frequency:</strong> Natural authority, voice carries farther, others respond. Warmth or expansion in the chest and solar plexus. Ideas or presence “shine” without effort. Command feels like alignment rather than control.</p>` },
+  { name: "Rhythmic", meaning: "Balance · Organize · Equality", base: 175, path: "M12 50 Q32 22 50 50 T88 50 Q68 78 50 50 T12 50",
+    deep: `<p><strong>Core Transmission:</strong> Organizing the radiated power into sustainable rhythm and equality. Rhythmic balances resources so the wave does not burn out.</p>
+    <p><strong>Astrology & Cycles:</strong> Disseminating moon, sixth house daily work and health. The organizing principle after peak expression.</p>
+    <p><strong>Psychology:</strong> Habit formation and equitable distribution of energy. Self-regulation, circadian alignment, the move from heroic effort to sustainable systems. Equality as both internal (parts of self) and external.</p>
+    <p><strong>Channeling this frequency:</strong> Desire for routine, fair exchange, and even pacing. Body seeks rhythm — breath, steps, daily structure. Overdrive softens into steady flow. Resources arrange themselves more equitably.</p>` },
+  { name: "Resonant", meaning: "Attune · Channel · Inspiration", base: 188, path: "M50 12 A34 34 0 1 1 50 88 A34 34 0 1 1 50 12 M50 28 A20 20 0 1 1 50 72",
+    deep: `<p><strong>Core Transmission:</strong> The mystic center of the wavespell. Resonant attunes the entire field and opens as a channel for inspiration beyond the personal.</p>
+    <p><strong>Astrology & Cycles:</strong> Last quarter reflective phase, seventh house mirroring. The still point that receives rather than pushes. Often linked to the 13th (hidden) element or Ophiuchus-style attunement.</p>
+    <p><strong>Psychology:</strong> Peak intuitive states, flow channeling, and the “observer self.” Transpersonal psychology’s access to higher guidance; the moment analysis yields to direct knowing.</p>
+    <p><strong>Channeling this frequency:</strong> Spontaneous insights, dreams, or downloads. Quiet, clear inner space. Body may feel light or vibrational. Inspiration arrives already formed; personal agenda softens into service as pure channel.</p>` },
+  { name: "Galactic", meaning: "Integrity · Harmonize", base: 201, path: "M50 16 L60 42 L86 42 L66 56 L72 84 L50 66 L28 84 L34 56 L14 42 L40 42 Z",
+    deep: `<p><strong>Core Transmission:</strong> Harmonizing action with higher integrity. Galactic ensures the wave remains coherent with its original purpose and larger order.</p>
+    <p><strong>Astrology & Cycles:</strong> Balsamic preparation, eighth house transformation with integrity. Alignment of personal will with cosmic or collective law (Argüelles’ galactic culture).</p>
+    <p><strong>Psychology:</strong> Congruence (Rogers) and moral integrity. The integration of shadow so that outward expression matches inner truth. No more split between values and behavior.</p>
+    <p><strong>Channeling this frequency:</strong> Strong sense of “this must be clean.” Misalignments become obvious and correctable. Body feels upright, centered. Decisions simplify because integrity is non-negotiable.</p>` },
+  { name: "Solar", meaning: "Intention · Realize · Pulsate", base: 214, path: "M50 8 A40 40 0 1 1 50 92 A40 40 0 1 1 50 8 M50 26 A24 24 0 1 1 50 74",
+    deep: `<p><strong>Core Transmission:</strong> Solar pulsation drives the intention toward realization. The wave’s light intensifies as form approaches completion.</p>
+    <p><strong>Astrology & Cycles:</strong> Solar return energy within the lunar wave; ninth house vision and higher purpose. The sun’s steady pulse inside the 13-tone cycle.</p>
+    <p><strong>Psychology:</strong> Sustained intention and visualization becoming reality. Goal-gradient effect; the motivational surge as the finish line appears. Realization as both insight and manifestation.</p>
+    <p><strong>Channeling this frequency:</strong> Warm, steady drive. Ideas clarify into concrete next steps. Heart or solar plexus pulses with purpose. What was abstract begins to feel inevitable and close.</p>` },
+  { name: "Planetary", meaning: "Manifest · Produce · Perfect", base: 227, path: "M50 12 L74 38 L50 68 L26 38 Z M50 30 L64 44 L50 60 L36 44 Z",
+    deep: `<p><strong>Core Transmission:</strong> The intention lands in physical reality and is perfected. Planetary produces tangible results and grounds the wave.</p>
+    <p><strong>Astrology & Cycles:</strong> Earth manifestation, tenth house career/public form. The cycle becomes visible and usable in the material world — the 13-tone equivalent of a completed lunar month bearing fruit.</p>
+    <p><strong>Psychology:</strong> Mastery and competence. The shift from process to product. Self-actualization moments when internal work appears as external competence.</p>
+    <p><strong>Channeling this frequency:</strong> Strong urge to finish, polish, and release into the world. Grounded, heavy-in-a-good-way body sensation. Results appear with surprising ease once the previous tones have done their work.</p>` },
+  { name: "Spectral", meaning: "Dissolve · Release · Liberate", base: 240, path: "M18 68 Q42 12 68 42 T98 32 M22 82 Q52 38 78 72",
+    deep: `<p><strong>Core Transmission:</strong> Dissolution of what is complete. Spectral liberates excess so the wave can move into higher cooperation without residue.</p>
+    <p><strong>Astrology & Cycles:</strong> Void-of-course or dark moon energy, twelfth house release. The necessary death/rebirth point inside the 13-tone cycle (echoing Tarot XIII and lunar endings).</p>
+    <p><strong>Psychology:</strong> Letting go, grief processing, and the death of obsolete identities. Gestalt completion, or the “clearing” stage before new structure. Liberation from attachment to outcomes.</p>
+    <p><strong>Channeling this frequency:</strong> Spontaneous release — old stories, relationships, or habits fall away. Body may feel lighter or temporarily empty. What no longer serves becomes obvious and easy to drop. Space opens.</p>` },
+  { name: "Crystal", meaning: "Cooperate · Dedicate · Universalize", base: 253, path: "M50 10 L70 30 L90 30 L74 46 L80 80 L50 60 L20 80 L26 46 L10 30 L30 30 Z",
+    deep: `<p><strong>Core Transmission:</strong> Dedication to the larger whole. Crystal universalizes the individual wave through cooperation and complex stability.</p>
+    <p><strong>Astrology & Cycles:</strong> Community and eleventh house group energy. The point where personal realization serves the collective — Argüelles’ galactic culture in action.</p>
+    <p><strong>Psychology:</strong> Belonging, contribution, and higher-order systems thinking. Maslow’s self-transcendence; the move from individual achievement to shared purpose.</p>
+    <p><strong>Channeling this frequency:</strong> Desire to share, teach, or build with others. Heart expands. Personal gains feel incomplete until they are offered. Cooperation arises naturally; isolation feels dissonant.</p>` },
+  { name: "Cosmic", meaning: "Transcend · Endure · Presence", base: 266, path: "M50 14 A30 30 0 1 1 50 78 A30 30 0 1 1 50 14 M30 42 L70 42 M50 18 L50 72",
+    deep: `<p><strong>Core Transmission:</strong> The completion and transcendence of the entire wavespell. Cosmic endures in pure presence and opens the gate to the next Magnetic impulse.</p>
+    <p><strong>Astrology & Cycles:</strong> The 13th “month,” the firmament, the point beyond the 12. Ophiuchus/hidden knowledge, the return to source. In the Law of Time it is the exit into galactic consciousness.</p>
+    <p><strong>Psychology:</strong> Integration and self-transcendence. The “peak experience” or oceanic feeling after a completed cycle. Presence without agenda; wisdom that no longer needs to prove itself.</p>
+    <p><strong>Channeling this frequency:</strong> Profound stillness and completeness. Time may feel spacious or irrelevant. Body light yet grounded. Insights arrive as simple knowing rather than information. The cycle feels finished and the next beginning is already quietly present.</p>` }
+];
+
+let audioCtx, masterGainNode;
+let nodes = [];
+
+function getCtx() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGainNode = audioCtx.createGain();
+    masterGainNode.gain.value = 0.65;
+    masterGainNode.connect(audioCtx.destination);
+    document.getElementById('masterGain').oninput = e => masterGainNode.gain.value = e.target.value;
+  }
+  return audioCtx;
+}
+
+function createSVG(path) {
+  return `<svg viewBox="0 0 100 100"><path d="${path}" fill="none" stroke="#ffd700" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+function buildChannel(t, i) {
+  const div = document.createElement('div');
+  div.className = 'channel';
+  div.innerHTML = `
+    <div class="symbol-box" onclick="openModal(${i})">${createSVG(t.path)}</div>
+    <div class="ch-name">${t.name}</div>
+    <div class="ch-meaning">${t.meaning}</div>
+    <div class="freq" id="freq-${i}">${t.base} Hz</div>
+    <div class="fader-container">
+      <input type="range" class="fader" min="0" max="1" step="0.01" value="0.35" id="gain-${i}">
+    </div>
+    <div class="knob-row"><label>Pan</label><input type="range" min="-1" max="1" step="0.01" value="0" id="pan-${i}"></div>
+    <div class="knob-row"><label>Delay</label><input type="range" min="0" max="0.8" step="0.01" value="0.18" id="delay-${i}"></div>
+    <div class="knob-row"><label>FB</label><input type="range" min="0" max="0.65" step="0.01" value="0.22" id="fb-${i}"></div>
+    <div class="knob-row"><label>LFO</label><input type="range" min="0" max="8" step="0.1" value="1.0" id="lfo-${i}"></div>
+    <div class="knob-row"><label>Rev</label><input type="range" min="0" max="0.55" step="0.01" value="0.12" id="rev-${i}"></div>
+    <div class="meter"><div class="meter-fill" id="meter-${i}"></div></div>
+    <div class="btn-row">
+      <button onclick="toggleTone(${i})">Tone</button>
+    </div>
+  `;
+  return div;
+}
+
+function openModal(i) {
+  document.getElementById('modalTitle').textContent = deep[i].name + " Tone";
+  document.getElementById('modalBody').innerHTML = deep[i].deep;
+  document.getElementById('modal').style.display = 'flex';
+  window.currentDeep = deep[i];
+}
+function closeModal() { 
+  document.getElementById('modal').style.display = 'none'; 
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+}
+window.onclick = e => { if (e.target.id === 'modal') closeModal(); };
+
+function readAloud() {
+  if (!window.currentDeep) return;
+  const text = document.getElementById('modalTitle').textContent + ". " + 
+               document.getElementById('modalBody').innerText;
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.rate = 0.9;
+    utter.pitch = 1;
+    window.speechSynthesis.speak(utter);
+  } else {
+    alert("Read aloud not supported in this browser.");
+  }
+}
+
+function shareContent() {
+  if (!window.currentDeep) return;
+  const title = window.currentDeep.name + " Tone — FREQUENCY 13";
+  const text = window.currentDeep.meaning + "\n\n" + document.getElementById('modalBody').innerText.substring(0, 300) + "...";
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title, text, url }).catch(() => {});
+  } else {
+    const full = title + "\n\n" + text + "\n\n" + url;
+    navigator.clipboard.writeText(full).then(() => alert("Copied to clipboard for sharing."));
+  }
+}
+
+function setupNode(i) {
+  const ctx = getCtx();
+  if (!nodes[i]) {
+    const gain = ctx.createGain();
+    const pan = ctx.createStereoPanner();
+    const delay = ctx.createDelay(1.0);
+    const fb = ctx.createGain();
+    const rev = ctx.createGain();
+    const lfo = ctx.createOscillator();
+    const lfoGain = ctx.createGain();
+
+    gain.connect(pan);
+    pan.connect(delay);
+    delay.connect(fb);
+    fb.connect(delay);
+    delay.connect(rev);
+    rev.connect(masterGainNode);
+    pan.connect(masterGainNode);
+
+    lfo.connect(lfoGain);
+    lfoGain.connect(delay.delayTime);
+    lfo.start();
+
+    nodes[i] = { gain, pan, delay, fb, rev, lfo, lfoGain };
+
+    document.getElementById(`gain-${i}`).oninput = e => nodes[i].gain.gain.value = e.target.value;
+    document.getElementById(`pan-${i}`).oninput = e => nodes[i].pan.pan.value = e.target.value;
+    document.getElementById(`delay-${i}`).oninput = e => nodes[i].delay.delayTime.value = e.target.value;
+    document.getElementById(`fb-${i}`).oninput = e => nodes[i].fb.gain.value = e.target.value;
+    document.getElementById(`lfo-${i}`).oninput = e => { nodes[i].lfo.frequency.value = e.target.value; nodes[i].lfoGain.gain.value = 0.04; };
+    document.getElementById(`rev-${i}`).oninput = e => nodes[i].rev.gain.value = e.target.value;
+  }
+  return nodes[i];
+}
+
+function toggleTone(i) {
+  const ctx = getCtx();
+  const n = setupNode(i);
+  if (n.osc) {
+    n.osc.stop(); n.osc = null;
+    document.getElementById(`freq-${i}`).style.color = 'var(--gold-bright)';
+    document.getElementById(`meter-${i}`).style.height = '0%';
+    return;
+  }
+  const osc = ctx.createOscillator();
+  osc.type = 'sine';
+  osc.frequency.value = deep[i].base;
+  osc.connect(n.gain);
+  osc.start();
+  n.osc = osc;
+  document.getElementById(`freq-${i}`).style.color = '#0f0';
+  const meter = document.getElementById(`meter-${i}`);
+  const anim = () => { if (!n.osc) return; meter.style.height = (28 + Math.random()*42) + '%'; requestAnimationFrame(anim); };
+  anim();
+}
+
+function stopAll() {
+  nodes.forEach((n, i) => {
+    if (n && n.osc) { n.osc.stop(); n.osc = null; }
+    const m = document.getElementById(`meter-${i}`); if (m) m.style.height = '0%';
+  });
+  document.querySelectorAll('.freq').forEach(el => el.style.color = 'var(--gold-bright)');
+  document.getElementById('status').textContent = 'All silenced.';
+}
+
+function playAll() {
+  deep.forEach((_, i) => { if (!nodes[i] || !nodes[i].osc) toggleTone(i); });
+  document.getElementById('status').textContent = 'All channels engaged.';
+}
+
+document.getElementById('stopAll').onclick = stopAll;
+document.getElementById('playAll').onclick = playAll;
+
+document.getElementById('bgColor').oninput = e => {
+  document.documentElement.style.setProperty('--bg', e.target.value);
+  document.body.style.background = `radial-gradient(ellipse at 50% 0%, #1a1106 0%, ${e.target.value} 70%)`;
+};
+document.getElementById('textColor').oninput = e => {
+  document.documentElement.style.setProperty('--text', e.target.value);
+  document.documentElement.style.setProperty('--gold', e.target.value);
+};
+
+const container = document.getElementById('channels');
+deep.forEach((t, i) => container.appendChild(buildChannel(t, i)));
+</script>
+</body>
+</html>
